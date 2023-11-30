@@ -9,59 +9,54 @@ import java.net.URI;
 import java.util.Collection;
 
 @Controller
-@RequestMapping(value="/itemManager2")
+@RequestMapping(value="/tarefaManager")
 @CrossOrigin
 public class MyFullController2 {
 
-	@Autowired
-	private ItemService service;
+    @Autowired
+    private TarefaService service;
 
-	// Get all items.
-	@GetMapping(value="/items", produces={"application/json","application/xml"})
-	public ResponseEntity<Collection<CatalogItem>> getItems() {
-		Collection<CatalogItem> result = service.getItems();
-		return ResponseEntity.ok().body(result);
-	}
+    @GetMapping(value="/tarefas", produces={"application/json","application/xml"})
+    public ResponseEntity<Collection<Tarefa>> getTarefas() {
+        Collection<Tarefa> result = service.getTarefas();
+        return ResponseEntity.ok().body(result);
+    }
 
-	// Get a specific item.
-	@GetMapping(value="/item/{id}", produces={"application/json","application/xml"})
-	public ResponseEntity<CatalogItem> getItem(@PathVariable int id) {
-		CatalogItem result = service.getItem(id);
-		if (service.getItem(id) == null)
-			return ResponseEntity.notFound().build();
-		else
-			return ResponseEntity.ok().body(result);
-	}
+    @GetMapping(value="/tarefa/{id}", produces={"application/json","application/xml"})
+    public ResponseEntity<Tarefa> getTarefa(@PathVariable int id) {
+        Tarefa result = service.getTarefa(id);
+        if (service.getTarefa(id) == null)
+            return ResponseEntity.notFound().build();
+        else
+            return ResponseEntity.ok().body(result);
+    }
 
-	// Insert a new item.
-	@PostMapping(value="/item",
-			consumes={"application/json","application/xml"},
-			produces={"application/json","application/xml"})
-	public ResponseEntity<CatalogItem> addItem(@RequestBody CatalogItem item) {
-		service.insert(item);
-		URI uri = URI.create("/item/" + item.getId());
-		return ResponseEntity.created(uri).body(item);
-	}
+    @PostMapping(value="/tarefa",
+            consumes={"application/json","application/xml"},
+            produces={"application/json","application/xml"})
+    public ResponseEntity<Tarefa> addTarefa(@RequestBody Tarefa tarefa) {
+        service.insert(tarefa);
+        URI uri = URI.create("/tarefa/" + tarefa.getId());
+        return ResponseEntity.created(uri).body(tarefa);
+    }
 
-	// Update an existing item.
-	@PutMapping(value="/item/{id}", consumes={"application/json","application/xml"})
-	public ResponseEntity modifyItem(@PathVariable int id, @RequestBody CatalogItem item) {
-		if (service.getItem(id) == null)
-			return ResponseEntity.notFound().build();
-		else {
-			service.update(item);
-			return ResponseEntity.ok().build();
-		}
-	}
+    @PutMapping(value="/tarefa/{id}", consumes={"application/json","application/xml"})
+    public ResponseEntity modifyTarefa(@PathVariable int id, @RequestBody Tarefa tarefa) {
+        if (service.getTarefa(id) == null)
+            return ResponseEntity.notFound().build();
+        else {
+            service.update(tarefa);
+            return ResponseEntity.ok().build();
+        }
+    }
 
-	// Delete an existing item.
-	@DeleteMapping("/item/{id}")
-	public ResponseEntity deleteItem(@PathVariable int id) {
-		if (service.getItem(id) == null)
-			return ResponseEntity.notFound().build();
-		else {
-			service.delete(id);
-			return ResponseEntity.ok().build();
-		}
-	}
+    @DeleteMapping("/tarefa/{id}")
+    public ResponseEntity deleteTarefa(@PathVariable int id) {
+        if (service.getTarefa(id) == null)
+            return ResponseEntity.notFound().build();
+        else {
+            service.delete(id);
+            return ResponseEntity.ok().build();
+        }
+    }
 }
